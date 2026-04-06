@@ -19,11 +19,13 @@ while True:
     if up and down:
         GPIO.output(leds, 255)
     if up:
-        num=num+1
-        print(num, dec2bin(num))
-        time.sleep(sleep_time)
+        if num!=255:
+            num=num+1
+            print(num, dec2bin(num))
+            time.sleep(sleep_time)
     if down:
-        num=num-1
-        print(num, dec2bin(num))
-        time.sleep(sleep_time)
+        if num!=0:
+            num=num-1
+            print(num, dec2bin(num))
+            time.sleep(sleep_time)
     GPIO.output(leds, dec2bin(num))
