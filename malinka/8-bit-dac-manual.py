@@ -2,10 +2,9 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BCM)
-leds = [16,12,25,17,27,23,22,24]
+leds = [16,20,21,25,26,17,27,22]
 GPIO.setup(leds, GPIO.OUT)
 GPIO.output(leds, 0)
-
 dynamic_range=3.3
 def voltage_to_number(voltage):
     if not(0.0<=voltage<=dynamic_range):
@@ -23,6 +22,7 @@ try:
             number = voltage_to_number(voltage)
             n = dec2bin(number)
             GPIO.output(leds, n)
+            print(n)
         except ValueError:
             print('Вы ввели не число...зачем...')
             GPIO.output(leds, 0)
