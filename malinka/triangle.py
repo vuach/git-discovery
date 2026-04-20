@@ -4,6 +4,45 @@ import time
 import RPi.GPIO as GPIO
 import smbus
 
+"""amp = 3.2
+sif = 10
+saf = 1000
+leds = [16,20,21,25,26,17,27,22]
+dynamic_range=3.14
+start = float(time.time())
+
+class Triag:
+    def __init__(self, led=12, F=200, v=1, f=0.05):
+        GPIO.setmode(GPIO.BCM)
+        self.led=led
+        self.step=v
+        self.tim=1/f
+        self.f=F
+        GPIO.setup(led, GPIO.OUT)
+        pwm=GPIO.PWM(self.led, self.f)
+        duty=0.0
+        pwm.start(duty)
+        while True:
+            pwm.ChangeDutyCycle(duty)
+            time.sleep(self.step)
+            duty+=self.step
+            if duty>=100.0 or duty<=0.0:
+                self.step=-self.step
+
+
+if __name__ == '__main__':
+    try:
+        dac = Triag(F=500, f=50)
+    finally:
+        dac.deinit()"""
+
+#r2r
+"""
+import r2r_dac as r2r
+import time
+import RPi.GPIO as GPIO
+
+
 amp = 3.2
 sif = 10
 saf = 1000
@@ -11,33 +50,21 @@ leds = [16,20,21,25,26,17,27,22]
 dynamic_range=3.14
 start = float(time.time())
 
-def triag(per, amp=2048):
-    bus = smbus.SMBus(1)
-    addr=0x61
-    def set_dac(val1):
-        val1 = max(0, min(4095, int(val1)))
-        bus.write_i2c_block_data(addr, 0x40|((val1>>8)&0x0F), [val1&0xFF])
+for pin in leds:
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
 
-    haf = per/2
-    steps=100
-    try:
-        while True:
-            for i in range(steps):
-                val = int((i/steps)*amp)
-                set_dac(val)
-                time.sleep(haf/steps)
-            for i in range(steps):
-                val = int(amp*(1-(i/steps)))
-                set_dac(val)
-                time.sleep(haf/steps)   
-    except KeyboardInterrupt:
-        set_dac(0)
-        bus.close()
-        print('Done')
-
-
-if __name__ == '__main__':
-    try:
-        triag(5)
-    finally:
-        dac.deinit()
+def set_val(val):
+    for i, pin in enumerate((leds)):
+        GPIO.output(pin, (val>>(7-i))&1)
+try:
+    while True:
+        for value in range(256):
+            set_val(value)
+            time.sleep(0.001)
+        for value in range(254, 1, -1):
+            set_val(value)
+            time.sleep(0.001)
+except KeyboardInterrupt:
+    set_val(0)
+    GPIO.cleanup()"""
