@@ -1,17 +1,24 @@
 import time
-import r2r_adc
+import r2r_adc2
 import adc_plot
-
-adc = r2r_adc.R2R_ADC(3.143, 0.0007)
-volt_val = []
-time_val = []
+from matplotlib import pyplot as plt
+adc = r2r_adc2.R2R_ADC(3.143, 0.0007)
+volts = []
+times = []
 dur = 3.0
 try:
     start = time.time()
-    while time.time()-start<dur:
-        volt_val.append(adc.seq_count())
-        time_val.append(time.time()-start)
-    adc_plot.plot_volt_vs_time(time_val, volt_val, 3.2)
-    adc_plot.plot_sampling_period_hist(time_val)
+    for i in range(100):
+            volt = adc.get_sar_volt()
+            volts.append(volt)
+            print(volt)
+            times.append(time.time()-start)
+            time.sleep(0.03)
+    plt.plot(times, volts)
+    plt.grid()
+    plt.show()
+    plt.hist(volts)
+    plt.grid()
+    plt.show()
 finally:
     adc.deinit()

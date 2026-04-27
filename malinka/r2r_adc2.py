@@ -36,7 +36,7 @@ class R2R_ADC:
                 time.sleep(self.compare_time)
                 if compVal==1:
                     return curvolt
-            return 255
+            return curvolt
         
     def suc_approx_adc(self):
             a = -1
@@ -52,7 +52,7 @@ class R2R_ADC:
             return m
         
     def get_sar_volt(self):
-            return self.seq_count()
+            return self.suc_approx_adc()
 
 if __name__ == "__main__":
     adc = R2R_ADC(3.13, 0.001)
@@ -61,6 +61,7 @@ if __name__ == "__main__":
     start_time=time.time()
     try:
         #while True:
+            #print(adc.get_sar_volt())
         for i in range(100):
             volt = adc.get_sar_volt()
             volts.append(volt)
@@ -74,5 +75,3 @@ if __name__ == "__main__":
 
     finally:
         adc.deinit()
-
-

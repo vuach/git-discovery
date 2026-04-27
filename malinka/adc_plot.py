@@ -6,6 +6,10 @@ def plot_volt_vs_time(time, volt, max_volt):
     plt.grid()
     plt.ylim(0, max_volt)
     plt.show()
+    plt.hist(volt)
+    plt.grid()
+    plt.show()
+    
 def plot_sampling_period_hist(time):
     samp_per = []
     for i in range(1, len(time)):
