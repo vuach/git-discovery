@@ -49,11 +49,10 @@ class R2R_ADC:
                     r = m
                 else:
                     a = m
-            return m
+            return r
         
     def get_sar_volt(self):
-            return self.suc_approx_adc()
-
+            return self.suc_approx_adc()/255*self.dynamic_range
 if __name__ == "__main__":
     adc = R2R_ADC(3.13, 0.001)
     volts= []
